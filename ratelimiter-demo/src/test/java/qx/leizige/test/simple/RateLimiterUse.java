@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * RateLimiter使用,模拟每秒最多五个请求
@@ -48,6 +49,7 @@ public class RateLimiterUse {
              * acquire是阻塞的且会一直等待到获取令牌为止，它有一个返回值为double型，意思是从阻塞开始到获取到令牌的等待时间，单位为秒
              * tryAcquire是另外一个方法，它可以指定超时时间，返回值为boolean型，即假设线程等待了指定时间后仍然没有获取到令牌，那么就会返回给客户端false，客户端根据自身情况是打回给前台错误还是定时重试
              */
+            //通过入参数量尝试获取多个许可
             rateLimiter.acquire(1);
 
             System.out.println(Thread.currentThread().getName() + "获取到了令牌,时间 = " + LocalDateTime.now());
@@ -83,5 +85,21 @@ public class RateLimiterUse {
      * RateLimiterThread = 21获取到了令牌,时间 = 2022-01-12T10:51:58.520
      * RateLimiterThread = 24获取到了令牌,时间 = 2022-01-12T10:51:58.720
      */
+
+
+    @Test
+    public void test2() throws InterruptedException {
+        /* 每秒最多允许5个流量(许可) */
+        RateLimiter rateLimiter = RateLimiter.create(5);
+        for (int i = 0; i < 10; i++) {
+            /* 调用tryAcquire()会尝试获取1个许可，如果获取到了，返回true，表示未被限流；否则返回false，表示没有获取到许可，被限流了。*/
+            if (rateLimiter.tryAcquire()) {
+                System.out.println(LocalTime.now() + " 通过");
+            } else {
+                System.out.println(LocalTime.now() + " 被限流");
+            }
+            Thread.sleep(100L);
+        }
+    }
 
 }

@@ -10,6 +10,11 @@ import qx.leizige.test.BaseTest;
 import java.util.concurrent.TimeUnit;
 
 
+/**
+ * RateLimiter的限制
+ * <p>
+ * 特别注意RateLimiter是单机的，也就是说它无法跨JVM使用，设置的1000QPS，那也在单机中保证平均1000QPS的流量。
+ */
 @Slf4j
 public class RateLimiterTest extends BaseTest {
 

@@ -12,6 +12,7 @@
         <module>ratelimiter-demo</module>
         <module>collections-demo</module>
         <module>cache-demo</module>
+        <module>concurrent-demo</module>
     </modules>
 
     <properties>
